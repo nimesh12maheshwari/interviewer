@@ -78,7 +78,7 @@ DataOutputStream dos;
         {
             Student_initials si;
             Database_operations ds=new Database_operations();
-            ss =new ServerSocket(6666);
+            ss =new ServerSocket(6669);
             System.out.println("Server started\n");
             System.out.println("waiting for a client!!!\n");
             s=ss.accept();
@@ -100,9 +100,12 @@ DataOutputStream dos;
             
             System.out.println("executed 6\n");
             dos.writeUTF("1");
+            System.out.println("executed 7\n");
             dos.flush();
-            dis.close();
-            dos.close();
+            //dis.close();
+            //dos.close();
+            new Screen().setVisible(true);
+            this.dispose();
             
         }
         catch(Exception e)

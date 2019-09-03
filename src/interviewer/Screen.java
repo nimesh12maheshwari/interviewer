@@ -5,17 +5,48 @@
  */
 package interviewer;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Sambhav Kanishka
  */
 public class Screen extends javax.swing.JFrame {
 
+    
+    ServerSocket ss =new ServerSocket(6668);
+    Socket s = ss.accept();
+    DataOutputStream dout; DataInputStream dis; String str;
+    //ServerSocket ss;
+    //static{
+//        try {
+//           //s = new Socket("192.168.137.1",6666);
+//            s = new Socket("172.29.44.250",6666);     
+//        } catch (IOException ex) {
+//            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+  //      System.out.println("inside static");
+    //}
     /**
      * Creates new form Screen
      */
-    public Screen() {
+    public Screen() throws IOException {
         initComponents();
+        dout=new DataOutputStream(s.getOutputStream());
+        Mthread t1 = new Mthread();
+        t1.start();
+//        try {
+//           //s = new Socket("192.168.137.1",6666);
+//            s = new Socket("172.29.44.250",6669);     
+//        } catch (IOException ex) {
+//            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 
     /**
@@ -30,10 +61,10 @@ public class Screen extends javax.swing.JFrame {
         question = new javax.swing.JTextField();
         studentName = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        code_editor = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
-        jTextField3 = new javax.swing.JTextField();
+        message_display_area = new javax.swing.JTextArea();
+        message_area = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         compile_btn = new javax.swing.JButton();
         run_btn = new javax.swing.JButton();
@@ -64,19 +95,30 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        code_editor.setColumns(20);
+        code_editor.setRows(5);
+        code_editor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                code_editorKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                code_editorKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                code_editorKeyTyped(evt);
+            }
+        });
+        jScrollPane1.setViewportView(code_editor);
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setColumns(20);
-        jTextArea2.setRows(5);
-        jScrollPane2.setViewportView(jTextArea2);
+        message_display_area.setEditable(false);
+        message_display_area.setColumns(20);
+        message_display_area.setRows(5);
+        jScrollPane2.setViewportView(message_display_area);
 
-        jTextField3.setText("Message");
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+        message_area.setText("Message");
+        message_area.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+                message_areaActionPerformed(evt);
             }
         });
 
@@ -180,7 +222,7 @@ public class Screen extends javax.swing.JFrame {
                     .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jButton1))
                     .addComponent(notes_text, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -215,7 +257,7 @@ public class Screen extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(50, 50, 50)))
                 .addGap(3, 3, 3)
@@ -250,9 +292,9 @@ public class Screen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_notes_textActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void message_areaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_message_areaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+    }//GEN-LAST:event_message_areaActionPerformed
 
     private void select_font_sizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_font_sizeActionPerformed
         // TODO add your handling code here:
@@ -260,8 +302,66 @@ public class Screen extends javax.swing.JFrame {
 
     private void select_font_styleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_font_styleActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_select_font_styleActionPerformed
 
+    private void code_editorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyTyped
+        // TODO add your handling code here:
+//        System.out.println("inside editor method");
+//        try{    
+//System.out.println("here");
+//dout.writeUTF(code_editor.getText());
+//System.out.println(code_editor.getText());
+//dout.flush();    
+//}
+//        catch(Exception e){System.out.println(e + "exception occured");}
+    }//GEN-LAST:event_code_editorKeyTyped
+
+    private void code_editorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyReleased
+        // TODO add your handling code here:
+//        System.out.println("inside editor method");
+//        try{    
+//System.out.println("here");
+//dout.writeUTF(code_editor.getText());
+//System.out.println(code_editor.getText());
+//dout.flush();    
+//}
+//        catch(Exception e){System.out.println(e + "exception occured");}
+    }//GEN-LAST:event_code_editorKeyReleased
+
+    private void code_editorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyPressed
+        // TODO add your handling code here:
+        //System.out.println("inside editor method");
+        try{    
+//System.out.println("here");
+dout.writeUTF(code_editor.getText());
+//System.out.println(code_editor.getText());
+dout.flush();    
+}
+        catch(Exception e){System.out.println(e + "exception occured");}
+    }//GEN-LAST:event_code_editorKeyPressed
+
+    public void func() throws IOException{
+       try{//ss=new ServerSocket(6669);
+     //  s=new Socket("172.29.43.151",6668);
+             // s=new Socket("localhost",6668);
+       //System.out.println("inside func");
+       dis=new DataInputStream(s.getInputStream());
+       while(true){
+       //System.out.println("inf"); 
+       str=(String)dis.readUTF();  
+       //System.out.println("message= "+str); 
+       code_editor.setText(str);
+//       str=(String)dis.readUTF();  
+//       System.out.println("message= "+str); 
+//       jTextArea1.setText(str);
+//       str=(String)dis.readUTF();  
+//       System.out.println("message= "+str); 
+//       jTextArea1.setText(str);
+       }
+    //ss.close();  
+}catch(Exception e){System.out.println(e);} 
+    }
     /**
      * @param args the command line arguments
      */
@@ -292,12 +392,17 @@ public class Screen extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Screen().setVisible(true);
+                try {
+                    new Screen().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextArea code_editor;
     private javax.swing.JButton compile_btn;
     private javax.swing.JPanel input_tab;
     private javax.swing.JButton jButton1;
@@ -307,11 +412,10 @@ public class Screen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextArea jTextArea2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JMenuBar menu_bar;
+    private javax.swing.JTextField message_area;
+    private javax.swing.JTextArea message_display_area;
     private javax.swing.JTextArea notes;
     private javax.swing.JTextField notes_text;
     private javax.swing.JTabbedPane output_tab;
@@ -323,4 +427,16 @@ public class Screen extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> select_language;
     private javax.swing.JTextField studentName;
     // End of variables declaration//GEN-END:variables
+
+private class Mthread extends Thread{
+    @Override
+    public void run(){
+        try {
+            func();
+        } catch (IOException ex) {
+            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    }
+    
 }
