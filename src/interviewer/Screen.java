@@ -20,9 +20,9 @@ import java.util.logging.Logger;
 public class Screen extends javax.swing.JFrame {
 
     
-    ServerSocket ss =new ServerSocket(6668);
-    Socket s = ss.accept();
-    DataOutputStream dout; DataInputStream dis; String str;
+    ServerSocket ss =new ServerSocket(6668);//, sms = new ServerSocket(6667);
+    Socket s = ss.accept();//,sm = sms.accept();
+    DataOutputStream dout, doutm; DataInputStream dis; String str;
     //ServerSocket ss;
     //static{
 //        try {
@@ -39,6 +39,7 @@ public class Screen extends javax.swing.JFrame {
     public Screen() throws IOException {
         initComponents();
         dout=new DataOutputStream(s.getOutputStream());
+       // doutm = new DataOutputStream(sm.getOutputStream());
         Mthread t1 = new Mthread();
         t1.start();
 //        try {
@@ -65,15 +66,17 @@ public class Screen extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         message_display_area = new javax.swing.JTextArea();
         message_area = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        send_btn = new javax.swing.JButton();
         compile_btn = new javax.swing.JButton();
         run_btn = new javax.swing.JButton();
         select_language = new javax.swing.JComboBox<>();
         select_font_style = new javax.swing.JComboBox<>();
         select_font_size = new javax.swing.JComboBox<>();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        input_tab = new javax.swing.JPanel();
-        output_tab = new javax.swing.JTabbedPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        input_text_tab = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        output_text_tab = new javax.swing.JTextArea();
         jScrollPane3 = new javax.swing.JScrollPane();
         notes = new javax.swing.JTextArea();
         notes_text = new javax.swing.JTextField();
@@ -122,10 +125,10 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Send");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        send_btn.setText("Send");
+        send_btn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                send_btnActionPerformed(evt);
             }
         });
 
@@ -154,19 +157,18 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout input_tabLayout = new javax.swing.GroupLayout(input_tab);
-        input_tab.setLayout(input_tabLayout);
-        input_tabLayout.setHorizontalGroup(
-            input_tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 563, Short.MAX_VALUE)
-        );
-        input_tabLayout.setVerticalGroup(
-            input_tabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 124, Short.MAX_VALUE)
-        );
+        input_text_tab.setColumns(20);
+        input_text_tab.setRows(5);
+        jScrollPane4.setViewportView(input_text_tab);
 
-        jTabbedPane1.addTab("Input", input_tab);
-        jTabbedPane1.addTab("Output", output_tab);
+        jTabbedPane1.addTab("Input", jScrollPane4);
+
+        output_text_tab.setEditable(false);
+        output_text_tab.setColumns(20);
+        output_text_tab.setRows(5);
+        jScrollPane5.setViewportView(output_text_tab);
+
+        jTabbedPane1.addTab("Output", jScrollPane5);
 
         notes.setColumns(20);
         notes.setRows(5);
@@ -224,7 +226,7 @@ public class Screen extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1))
+                        .addComponent(send_btn))
                     .addComponent(notes_text, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(save_notes_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -258,15 +260,15 @@ public class Screen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(50, 50, 50)))
                 .addGap(3, 3, 3)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(save_notes_btn))
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jTabbedPane1)))
         );
 
         pack();
@@ -284,9 +286,15 @@ public class Screen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_studentNameActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void send_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_send_btnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+//        String string = (String)message_area.getText();
+//        try {
+//            dout.writeUTF(string);
+//        } catch (IOException ex) {
+//            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }//GEN-LAST:event_send_btnActionPerformed
 
     private void notes_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notes_textActionPerformed
         // TODO add your handling code here:
@@ -320,18 +328,6 @@ public class Screen extends javax.swing.JFrame {
     private void code_editorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyReleased
         // TODO add your handling code here:
 //        System.out.println("inside editor method");
-//        try{    
-//System.out.println("here");
-//dout.writeUTF(code_editor.getText());
-//System.out.println(code_editor.getText());
-//dout.flush();    
-//}
-//        catch(Exception e){System.out.println(e + "exception occured");}
-    }//GEN-LAST:event_code_editorKeyReleased
-
-    private void code_editorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyPressed
-        // TODO add your handling code here:
-        //System.out.println("inside editor method");
         try{    
 //System.out.println("here");
 dout.writeUTF(code_editor.getText());
@@ -339,6 +335,18 @@ dout.writeUTF(code_editor.getText());
 dout.flush();    
 }
         catch(Exception e){System.out.println(e + "exception occured");}
+    }//GEN-LAST:event_code_editorKeyReleased
+
+    private void code_editorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyPressed
+        // TODO add your handling code here:
+        //System.out.println("inside editor method");
+//        try{    
+////System.out.println("here");
+//dout.writeUTF(code_editor.getText());
+////System.out.println(code_editor.getText());
+//dout.flush();    
+//}
+//        catch(Exception e){System.out.println(e + "exception occured");}
     }//GEN-LAST:event_code_editorKeyPressed
 
     public void func() throws IOException{
@@ -404,13 +412,14 @@ dout.flush();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea code_editor;
     private javax.swing.JButton compile_btn;
-    private javax.swing.JPanel input_tab;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextArea input_text_tab;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JMenuBar menu_bar;
@@ -418,13 +427,14 @@ dout.flush();
     private javax.swing.JTextArea message_display_area;
     private javax.swing.JTextArea notes;
     private javax.swing.JTextField notes_text;
-    private javax.swing.JTabbedPane output_tab;
+    private javax.swing.JTextArea output_text_tab;
     private javax.swing.JTextField question;
     private javax.swing.JButton run_btn;
     private javax.swing.JButton save_notes_btn;
     private javax.swing.JComboBox<String> select_font_size;
     private javax.swing.JComboBox<String> select_font_style;
     private javax.swing.JComboBox<String> select_language;
+    private javax.swing.JButton send_btn;
     private javax.swing.JTextField studentName;
     // End of variables declaration//GEN-END:variables
 
