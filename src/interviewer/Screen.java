@@ -5,13 +5,16 @@
  */
 package interviewer;
 
+import java.awt.Font;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import static java.lang.Integer.parseInt;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
@@ -61,8 +64,6 @@ public class Screen extends javax.swing.JFrame {
 
         question = new javax.swing.JTextField();
         studentName = new javax.swing.JTextField();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        code_editor = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         message_display_area = new javax.swing.JTextArea();
         message_area = new javax.swing.JTextField();
@@ -70,8 +71,8 @@ public class Screen extends javax.swing.JFrame {
         compile_btn = new javax.swing.JButton();
         run_btn = new javax.swing.JButton();
         select_language = new javax.swing.JComboBox<>();
-        select_font_style = new javax.swing.JComboBox<>();
         select_font_size = new javax.swing.JComboBox<>();
+        select_font_style = new javax.swing.JComboBox<>();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jScrollPane4 = new javax.swing.JScrollPane();
         input_text_tab = new javax.swing.JTextArea();
@@ -82,6 +83,8 @@ public class Screen extends javax.swing.JFrame {
         notes_text = new javax.swing.JTextField();
         save_notes_btn = new javax.swing.JButton();
         jTextField5 = new javax.swing.JTextField();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        code_editor = new javax.swing.JEditorPane();
         menu_bar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -89,6 +92,11 @@ public class Screen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         question.setText("Question");
+        question.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                questionActionPerformed(evt);
+            }
+        });
 
         studentName.setEditable(false);
         studentName.setText("Student's Name");
@@ -98,27 +106,17 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        code_editor.setColumns(20);
-        code_editor.setRows(5);
-        code_editor.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                code_editorKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                code_editorKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                code_editorKeyTyped(evt);
-            }
-        });
-        jScrollPane1.setViewportView(code_editor);
-
         message_display_area.setEditable(false);
         message_display_area.setColumns(20);
         message_display_area.setRows(5);
         jScrollPane2.setViewportView(message_display_area);
 
         message_area.setText("Message");
+        message_area.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                message_areaMouseClicked(evt);
+            }
+        });
         message_area.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 message_areaActionPerformed(evt);
@@ -141,19 +139,29 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        select_language.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        select_language.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "C", "C++ 14", "Java", "Python", " " }));
 
-        select_font_style.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        select_font_style.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                select_font_styleActionPerformed(evt);
+        select_font_size.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52", "53", "54", "55", "56", "57", "58", "59", "60" }));
+        select_font_size.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                select_font_sizeItemStateChanged(evt);
             }
         });
-
-        select_font_size.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         select_font_size.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 select_font_sizeActionPerformed(evt);
+            }
+        });
+
+        select_font_style.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Times New Roman", "Abadi MT Condensed Extra Bold", "Abadi MT Condensed Light", "Academy Engraved LET", "Al Bayan", "American Typewriter", "Andale Mono", "Apple Casual", "Apple Chancery", "Apple LiGothic", "Apple LiSung", "Apple Symbols", "AppleGothic", "AppleMyungjo", "Arial", "Arial Black", "Arial Hebrew", "Arial Narrow", "Arial Rounded MT Bold", "Ayuthaya", "Baghdad", "Bank Gothic", "Baskerville", "Baskerville Old Face", "Batang", "Bauhaus 93", "Bell MT", "Bernard MT Condensed", "BiauKai", "Big Caslon", "Bitstream Vera Sans", "Bitstream Vera Sans Mono", "Bitstream Vera Serif", "Blackmoor LET", "BlairMdITC TT", "Bodoni Ornaments ITC TT", "Bodoni SvtyTwo ITC TT", "Bodoni SvtyTwo OS ITC TT", "Bodoni SvtyTwo SC ITC TT", "Book Antiqua", "Bookman Old Style", "Bordeaux Roman Bold LET", "Bradley Hand ITC TT", "Braggadocio", "Britannic Bold", "Brush Script MT", "Calisto MT", "Century", "Century Gothic", "Century Schoolbook", "Chalkboard", "Charcoal CY", "Cochin", "Colonna MT", "Comic Sans MS", "Cooper Black", "Copperplate", "Copperplate Gothic Bold", "Copperplate Gothic Light", "Corsiva Hebrew", "Courier", "Courier New", "Cracked", "Curlz MT", "DecoType Naskh", "Desdemona", "Devanagari MT", "Dialog", "DialogInput", "Didot", "Edwardian Script ITC", "Engravers MT", "Euphemia UCAS", "Eurostile", "Footlight MT Light", "Futura", "Garamond", "GB18030 Bitmap", "Geeza Pro", "Geneva", "Geneva CY", "Georgia", "Gill Sans", "Gill Sans Ultra Bold", "Gloucester MT Extra Condensed", "Goudy Old Style", "Gujarati MT", "Gulim", "Gurmukhi MT", "Haettenschweiler", "Handwriting - Dakota", "Harrington", "Hei", "Helvetica", "Helvetica CY", "Helvetica Neue", "Herculanum", "Hiragino Kaku Gothic Pro", "Hiragino Kaku Gothic Std", "Hiragino Maru Gothic Pro", "Hiragino Mincho Pro", "Hoefler Text", "Impact", "Imprint MT Shadow", "InaiMathi", "Jazz LET", "Kai", "Kino MT", "Krungthep", "KufiStandardGK", "LiHei Pro", "LiSong Pro", "Lucida Blackletter", "Lucida Bright", "Lucida Calligraphy", "Lucida Fax", "Lucida Grande", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Marker Felt", "Matura MT Script Capitals", "Mistral", "Modern No. 20", "Mona Lisa Solid ITC TT", "Monaco", "Monospaced", "Monotype Corsiva", "Monotype Sorts", "MS Gothic", "MS Mincho", "MS PGothic", "MS PMincho", "Mshtakan", "MT Extra", "Nadeem", "New Peninim MT", "News Gothic MT", "Onyx", "OpenSymbol", "Optima", "Osaka", "Palatino", "Papyrus", "Party LET", "Perpetua Titling MT", "Plantagenet Cherokee", "Playbill", "PMingLiU", "PortagoITC TT", "Princetown LET", "Raanana", "Rockwell", "Rockwell Extra Bold", "SansSerif", "Santa Fe LET", "Sathu", "Savoye LET", "SchoolHouse Cursive B", "SchoolHouse Printed A", "Serif", "Silom", "SimSun", "Skia", "Snell Roundhand", "Stencil", "STFangsong", "STHeiti", "STKaiti", "Stone Sans ITC TT", "Stone Sans Sem ITC TT", "STSong", "Symbol", "Synchro LET", "Tahoma", "Thonburi", "Times", "Times New Roman", "Trebuchet MS", "Type Embellishments One LET", "Verdana", "Webdings", "Wide Latin", "Wingdings", "Wingdings 2", "Wingdings 3", "Zapf Dingbats", "Zapfino" }));
+        select_font_style.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                select_font_styleItemStateChanged(evt);
+            }
+        });
+        select_font_style.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                select_font_styleActionPerformed(evt);
             }
         });
 
@@ -192,6 +200,13 @@ public class Screen extends javax.swing.JFrame {
         jTextField5.setEditable(false);
         jTextField5.setText("Timer");
 
+        code_editor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                code_editorKeyPressed(evt);
+            }
+        });
+        jScrollPane6.setViewportView(code_editor);
+
         jMenu1.setText("File");
         menu_bar.add(jMenu1);
 
@@ -206,19 +221,19 @@ public class Screen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
+                    .addComponent(question, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(compile_btn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(run_btn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(select_language, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(select_font_size, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(select_font_style, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(select_font_style, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(question, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.LEADING))
+                        .addComponent(select_font_size, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -235,13 +250,23 @@ public class Screen extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(question))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -249,19 +274,10 @@ public class Screen extends javax.swing.JFrame {
                                 .addComponent(run_btn)
                                 .addComponent(select_language, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(select_font_style, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(select_font_size, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(notes_text, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(select_font_size, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(12, 12, 12))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(send_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(50, 50, 50)))
+                                .addComponent(select_font_style, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(12, 12, 12)))
                 .addGap(3, 3, 3)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
@@ -287,13 +303,18 @@ public class Screen extends javax.swing.JFrame {
     }//GEN-LAST:event_studentNameActionPerformed
 
     private void send_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_send_btnActionPerformed
-        // TODO add your handling code here:
-//        String string = (String)message_area.getText();
-//        try {
-//            dout.writeUTF(string);
-//        } catch (IOException ex) {
-//            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+//         TODO add your handling code here:
+        String string = (String)message_area.getText();
+        try {
+            dout.writeUTF(string);
+            dout.writeInt(1);
+            dout.flush();
+            message_display_area.setText(message_display_area.getText() + "\n" + "You: "+string);
+            message_area.setText("");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_send_btnActionPerformed
 
     private void notes_textActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notes_textActionPerformed
@@ -302,52 +323,71 @@ public class Screen extends javax.swing.JFrame {
 
     private void message_areaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_message_areaActionPerformed
         // TODO add your handling code here:
+       String string = (String)message_area.getText();
+        try {
+            dout.writeUTF(string);
+            dout.writeInt(1);
+            dout.flush();
+            message_display_area.setText(message_display_area.getText() + "\n" + "You: "+string);
+            message_area.setText("");
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_message_areaActionPerformed
-
-    private void select_font_sizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_font_sizeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_select_font_sizeActionPerformed
 
     private void select_font_styleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_font_styleActionPerformed
         // TODO add your handling code here:
-        
     }//GEN-LAST:event_select_font_styleActionPerformed
 
-    private void code_editorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyTyped
+    private void select_font_sizeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_font_sizeActionPerformed
         // TODO add your handling code here:
-//        System.out.println("inside editor method");
-//        try{    
-//System.out.println("here");
-//dout.writeUTF(code_editor.getText());
-//System.out.println(code_editor.getText());
-//dout.flush();    
-//}
-//        catch(Exception e){System.out.println(e + "exception occured");}
-    }//GEN-LAST:event_code_editorKeyTyped
+        
+    }//GEN-LAST:event_select_font_sizeActionPerformed
 
-    private void code_editorKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyReleased
+    private void code_editorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyPressed
         // TODO add your handling code here:
-//        System.out.println("inside editor method");
         try{    
 //System.out.println("here");
 dout.writeUTF(code_editor.getText());
+dout.writeInt(0);
 //System.out.println(code_editor.getText());
 dout.flush();    
 }
         catch(Exception e){System.out.println(e + "exception occured");}
-    }//GEN-LAST:event_code_editorKeyReleased
-
-    private void code_editorKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyPressed
-        // TODO add your handling code here:
-        //System.out.println("inside editor method");
-//        try{    
-////System.out.println("here");
-//dout.writeUTF(code_editor.getText());
-////System.out.println(code_editor.getText());
-//dout.flush();    
-//}
-//        catch(Exception e){System.out.println(e + "exception occured");}
     }//GEN-LAST:event_code_editorKeyPressed
+
+    private void select_font_sizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_select_font_sizeItemStateChanged
+        // TODO add your handling code here:
+        String str = (String)select_font_style.getSelectedItem().toString();
+        int size = parseInt((String)select_font_size.getSelectedItem().toString());
+        code_editor.setFont(new Font(str,Font.PLAIN,size));
+    }//GEN-LAST:event_select_font_sizeItemStateChanged
+
+    private void select_font_styleItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_select_font_styleItemStateChanged
+        // TODO add your handling code here:        
+        String str = (String)select_font_style.getSelectedItem().toString();
+        int size = parseInt((String)select_font_size.getSelectedItem().toString());
+        code_editor.setFont(new Font(str,Font.PLAIN,size));
+    }//GEN-LAST:event_select_font_styleItemStateChanged
+
+    private void questionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questionActionPerformed
+        try {
+            // TODO add your handling code here:
+            dout.writeUTF(question.getText());
+            dout.writeInt(2);
+//System.out.println(code_editor.getText());
+            dout.flush();
+        } catch (IOException ex) {
+            Logger.getLogger(Screen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+  
+    }//GEN-LAST:event_questionActionPerformed
+
+    private void message_areaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_message_areaMouseClicked
+        // TODO add your handling code here:
+        message_area.setText("");
+    }//GEN-LAST:event_message_areaMouseClicked
 
     public void func() throws IOException{
        try{//ss=new ServerSocket(6669);
@@ -358,8 +398,15 @@ dout.flush();
        while(true){
        //System.out.println("inf"); 
        str=(String)dis.readUTF();  
-       //System.out.println("message= "+str); 
+       int area = dis.readInt();
+       //System.out.println("message= "+str);
+       //code_editor.setEditorKit(new HTMLEditorKit());
+       if(area==0)
        code_editor.setText(str);
+       else if(area==1)
+       {
+           message_display_area.setText(message_display_area.getText() + "\n" + str);
+       }
 //       str=(String)dis.readUTF();  
 //       System.out.println("message= "+str); 
 //       jTextArea1.setText(str);
@@ -410,16 +457,16 @@ dout.flush();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea code_editor;
+    private javax.swing.JEditorPane code_editor;
     private javax.swing.JButton compile_btn;
     private javax.swing.JTextArea input_text_tab;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JMenuBar menu_bar;
