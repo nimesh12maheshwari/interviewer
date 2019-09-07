@@ -37,9 +37,9 @@ public class Screen extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         compile_btn = new javax.swing.JButton();
         run_btn = new javax.swing.JButton();
-        select_language = new javax.swing.JComboBox<>();
-        select_font_style = new javax.swing.JComboBox<>();
-        select_font_size = new javax.swing.JComboBox<>();
+        select_language = new javax.swing.JComboBox<String>();
+        select_font_style = new javax.swing.JComboBox<String>();
+        select_font_size = new javax.swing.JComboBox<String>();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         input_tab = new javax.swing.JPanel();
         output_tab = new javax.swing.JTabbedPane();
@@ -55,6 +55,11 @@ public class Screen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         question.setText("Question");
+        question.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                questionActionPerformed(evt);
+            }
+        });
 
         studentName.setEditable(false);
         studentName.setText("Student's Name");
@@ -96,16 +101,16 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        select_language.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        select_language.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        select_font_style.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        select_font_style.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         select_font_style.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 select_font_styleActionPerformed(evt);
             }
         });
 
-        select_font_size.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        select_font_size.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         select_font_size.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 select_font_sizeActionPerformed(evt);
@@ -261,6 +266,10 @@ public class Screen extends javax.swing.JFrame {
     private void select_font_styleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_select_font_styleActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_select_font_styleActionPerformed
+
+    private void questionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_questionActionPerformed
 
     /**
      * @param args the command line arguments
