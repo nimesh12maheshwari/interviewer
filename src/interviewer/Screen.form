@@ -199,6 +199,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Compile"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="compile_btnActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="run_btn">
       <Properties>
@@ -211,14 +214,16 @@
     <Component class="javax.swing.JComboBox" name="select_language">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="4">
-            <StringItem index="0" value="Item 1"/>
-            <StringItem index="1" value="Item 2"/>
-            <StringItem index="2" value="Item 3"/>
-            <StringItem index="3" value="Item 4"/>
+          <StringArray count="3">
+            <StringItem index="0" value="C"/>
+            <StringItem index="1" value="C++"/>
+            <StringItem index="2" value="JAVA"/>
           </StringArray>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="select_languageItemStateChanged"/>
+      </Events>
       <AuxValues>
         <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
       </AuxValues>

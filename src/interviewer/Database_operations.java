@@ -21,7 +21,7 @@ public class Database_operations
         System.out.println("executed 5.1\n");
         Class.forName("com.mysql.jdbc.Driver");
         System.out.println("executed 5.2\n");
-        Connection con=DriverManager.getConnection( "jdbc:mysql://localhost:3306/intercode","root","kashyap@99");
+        Connection con=DriverManager.getConnection( "jdbc:mysql://localhost:3306/intercode","root","root");
         System.out.println("executed 5.3\n");
         Statement stmt=con.createStatement();  
         System.out.println("executed 5.4\n");

@@ -5,20 +5,25 @@
  */
 package interviewer;
 
+import static java.awt.image.ImageObserver.WIDTH;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author Sambhav Kanishka
  */
 public class Screen extends javax.swing.JFrame {
-
+ String compiler_no="0";
+    int choose_compiler=0;
+   
     
     ServerSocket ss =new ServerSocket(6668);//, sms = new ServerSocket(6667);
     Socket s = ss.accept();//,sm = sms.accept();
@@ -138,6 +143,11 @@ public class Screen extends javax.swing.JFrame {
         });
 
         compile_btn.setText("Compile");
+        compile_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compile_btnActionPerformed(evt);
+            }
+        });
 
         run_btn.setText("Run");
         run_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -146,7 +156,12 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        select_language.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        select_language.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "C", "C++", "JAVA" }));
+        select_language.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                select_languageItemStateChanged(evt);
+            }
+        });
 
         select_font_style.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         select_font_style.addActionListener(new java.awt.event.ActionListener() {
@@ -280,7 +295,32 @@ public class Screen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void run_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_run_btnActionPerformed
-        // TODO add your handling code here:
+        try
+        {
+            if(choose_compiler==0)
+            {
+                String s=new Gcc_Compiler().run();
+                System.out.println("RECEIVED STRING="+s);
+                output_text_tab.setText(s);
+            }
+            else if(choose_compiler==1)
+            {
+                String s=new CppCompiler().run();
+                System.out.println("RECEIVED STRING="+s);
+                output_text_tab.setText(s);
+            }
+            else if(choose_compiler==2)
+            {
+                String s=new JavaCompiler().run();
+                System.out.println("RECEIVED STRING="+s);
+                output_text_tab.setText(s);
+            
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, e);
+        }
     }//GEN-LAST:event_run_btnActionPerformed
 
     private void save_notes_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_save_notes_btnActionPerformed
@@ -318,12 +358,10 @@ public class Screen extends javax.swing.JFrame {
         
     }//GEN-LAST:event_select_font_styleActionPerformed
 
-<<<<<<< HEAD
     private void questionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questionActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_questionActionPerformed
 
-=======
     private void code_editorKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_code_editorKeyTyped
         // TODO add your handling code here:
 //        System.out.println("inside editor method");
@@ -360,6 +398,115 @@ dout.flush();
 //        catch(Exception e){System.out.println(e + "exception occured");}
     }//GEN-LAST:event_code_editorKeyPressed
 
+    private void compile_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compile_btnActionPerformed
+        
+       try
+        {
+            if(choose_compiler==0)
+            {
+                String code=code_editor.getText();
+                System.out.println("---------"+code+"----------");
+            
+                String path = System.getProperty("user.dir");
+                System.out.println("------PATH-"+path+"\\q1.c");
+                FileWriter fw=new FileWriter(path+"\\q1.c");
+                fw.write(code);
+                fw.flush();
+                fw.close();
+                
+                System.out.println("hi 2");
+                String input=input_text_tab.getText();
+                
+                System.out.println("---------"+input+"----------");
+
+                FileWriter fw1=new FileWriter(path+"\\input.c");
+                fw1.write(input);
+                fw1.flush();
+                fw1.close();
+                
+                System.out.println("hi 3");
+                String ans=new Gcc_Compiler().compile_only();
+                System.out.println("STRING================"+ans);
+                output_text_tab.setText(ans);
+            }
+            else if(choose_compiler==1)
+            {
+                String code=code_editor.getText();
+                System.out.println("---------"+code+"----------");
+            
+                String path = System.getProperty("user.dir");
+                System.out.println("------PATH-"+path+"\\q1.cpp");
+                FileWriter fw=new FileWriter(path+"\\q1.cpp");
+                fw.write(code);
+                fw.flush();
+                fw.close();
+                
+                System.out.println("hi 2");
+                String input=input_text_tab.getText();
+                
+                System.out.println("---------"+input+"----------");
+
+                FileWriter fw1=new FileWriter(path+"\\input.c");
+                fw1.write(input);
+                fw1.flush();
+                fw1.close();
+                
+                System.out.println("hi 3");
+                String ans=new CppCompiler().compile_only();
+                System.out.println("STRING================"+ans);
+                output_text_tab.setText(ans);
+            }   
+            else if(choose_compiler==2)
+            {
+                String code=code_editor.getText();
+                System.out.println("---------"+code+"----------");
+            
+                String path = System.getProperty("user.dir");
+                System.out.println("------PATH-"+path+"\\q1.java");
+                FileWriter fw=new FileWriter(path+"\\q1.java");
+                fw.write(code);
+                fw.flush();
+                fw.close();
+                
+                System.out.println("hi 2");
+                String input=input_text_tab.getText();
+                
+                System.out.println("---------"+input+"----------");
+
+                FileWriter fw1=new FileWriter(path+"\\input.c");
+                fw1.write(input);
+                fw1.flush();
+                fw1.close();
+                
+                System.out.println("hi 3");
+                String ans=new JavaCompiler().compile_only();
+                System.out.println("STRING================"+ans);
+                output_text_tab.setText(ans);
+            }
+        }
+        catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(this, e, str, WIDTH);
+        } 
+    }//GEN-LAST:event_compile_btnActionPerformed
+
+    private void select_languageItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_select_languageItemStateChanged
+        compiler_no=(String)select_language.getSelectedItem();
+       if(compiler_no=="C")
+       {
+         choose_compiler=0;  
+       }
+       else if(compiler_no=="C++")
+       {
+           choose_compiler=1;
+       }
+       else if(compiler_no=="JAVA")
+       {
+           choose_compiler=2;
+       }
+            
+    }//GEN-LAST:event_select_languageItemStateChanged
+
     public void func() throws IOException{
        try{//ss=new ServerSocket(6669);
      //  s=new Socket("172.29.43.151",6668);
@@ -381,7 +528,6 @@ dout.flush();
     //ss.close();  
 }catch(Exception e){System.out.println(e);} 
     }
->>>>>>> e42c260a229f40456be8781cc5fed240c7478989
     /**
      * @param args the command line arguments
      */
