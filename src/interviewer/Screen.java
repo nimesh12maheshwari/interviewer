@@ -14,7 +14,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.html.HTMLEditorKit;
 
 /**
  *
@@ -22,7 +21,8 @@ import javax.swing.text.html.HTMLEditorKit;
  */
 public class Screen extends javax.swing.JFrame {
 
-    
+    static int ms=0, sec=0,mins=0,hrs=0;
+    boolean st = false;
     ServerSocket ss =new ServerSocket(6668);//, sms = new ServerSocket(6667);
     Socket s = ss.accept();//,sm = sms.accept();
     DataOutputStream dout, doutm; DataInputStream dis; String str;
@@ -38,6 +38,7 @@ public class Screen extends javax.swing.JFrame {
     //}
     /**
      * Creates new form Screen
+     * @throws java.io.IOException
      */
     public Screen() throws IOException {
         initComponents();
@@ -62,6 +63,7 @@ public class Screen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton2 = new javax.swing.JButton();
         question = new javax.swing.JTextField();
         studentName = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -82,12 +84,19 @@ public class Screen extends javax.swing.JFrame {
         notes = new javax.swing.JTextArea();
         notes_text = new javax.swing.JTextField();
         save_notes_btn = new javax.swing.JButton();
-        jTextField5 = new javax.swing.JTextField();
         jScrollPane6 = new javax.swing.JScrollPane();
         code_editor = new javax.swing.JEditorPane();
+        hours = new javax.swing.JLabel();
+        minutes = new javax.swing.JLabel();
+        seconds = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         menu_bar = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+
+        jButton2.setText("jButton2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -197,15 +206,42 @@ public class Screen extends javax.swing.JFrame {
             }
         });
 
-        jTextField5.setEditable(false);
-        jTextField5.setText("Timer");
-
         code_editor.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 code_editorKeyPressed(evt);
             }
         });
         jScrollPane6.setViewportView(code_editor);
+
+        hours.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        hours.setText("00");
+
+        minutes.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        minutes.setText("00");
+
+        seconds.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        seconds.setText("00");
+
+        jButton1.setText("Start");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("Stop");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("Reset");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jMenu1.setText("File");
         menu_bar.add(jMenu1);
@@ -229,37 +265,58 @@ public class Screen extends javax.swing.JFrame {
                         .addComponent(run_btn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(select_language, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(select_font_style, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(select_font_size, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(message_area)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(send_btn))
-                    .addComponent(notes_text, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(save_notes_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(hours, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(minutes, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(seconds, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane3)
+                    .addComponent(save_notes_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(notes_text)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4))
+                    .addComponent(jScrollPane2)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(question, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(hours, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(seconds, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(minutes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(question))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(studentName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton4))
+                        .addGap(2, 2, 2)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(message_area, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -389,6 +446,77 @@ dout.flush();
         message_area.setText("");
     }//GEN-LAST:event_message_areaMouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        st = true;
+        
+        Thread t1;
+        t1 = new Thread(){
+            
+            public void run()
+            {
+                while(true)
+                {
+                    if(st==true){
+                        try
+                        {
+                            sleep(1000);
+                            sec++;
+//                            if(ms>=999)
+//                            {
+//                                sleep(1);
+//                                ms=0;
+//                                sec++;
+//                            }
+                            if(sec==60)
+                            {
+                                ms=0;
+                                sec=0;
+                                mins++;
+                            }
+                            if(mins==60)
+                            {
+                                ms=0;
+                                sec=0;
+                                mins=0;
+                                hrs++;
+                            }
+                            seconds.setText(" : "+sec);
+                            minutes.setText(" : "+mins);
+                            hours.setText(""+hrs);
+                        }
+                        catch(Exception e){
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+        };
+        t1.start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        st=false;
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        st=false;
+        ms=0;
+        hrs=0;
+        sec=0;
+        mins=0;
+        
+        seconds.setText(": "+sec);
+        minutes.setText(": "+mins);
+        hours.setText(""+hrs);
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     public void func() throws IOException{
        try{//ss=new ServerSocket(6669);
      //  s=new Socket("172.29.43.151",6668);
@@ -459,7 +587,12 @@ dout.flush();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JEditorPane code_editor;
     private javax.swing.JButton compile_btn;
+    private javax.swing.JLabel hours;
     private javax.swing.JTextArea input_text_tab;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JScrollPane jScrollPane2;
@@ -468,16 +601,17 @@ dout.flush();
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField5;
     private javax.swing.JMenuBar menu_bar;
     private javax.swing.JTextField message_area;
     private javax.swing.JTextArea message_display_area;
+    private javax.swing.JLabel minutes;
     private javax.swing.JTextArea notes;
     private javax.swing.JTextField notes_text;
     private javax.swing.JTextArea output_text_tab;
     private javax.swing.JTextField question;
     private javax.swing.JButton run_btn;
     private javax.swing.JButton save_notes_btn;
+    private javax.swing.JLabel seconds;
     private javax.swing.JComboBox<String> select_font_size;
     private javax.swing.JComboBox<String> select_font_style;
     private javax.swing.JComboBox<String> select_language;
