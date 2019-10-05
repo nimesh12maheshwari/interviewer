@@ -411,7 +411,7 @@ dout.writeInt(0);
 //System.out.println(code_editor.getText());
 dout.flush();    
 }
-        catch(Exception e){System.out.println(e + "exception occured|| fatal exception");}
+        catch(Exception e){System.out.println(e + "exception occured|| fatal exception!!");}
     }//GEN-LAST:event_code_editorKeyPressed
 
     private void select_font_sizeItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_select_font_sizeItemStateChanged
